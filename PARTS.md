@@ -13,5 +13,6 @@ This build includes:
 - Loose Dupont wires (you can find some [here](https://www.amazon.com/EDGELEC-Breadboard-Optional-Assorted-Multicolored/dp/B07GD2BWPY?crid=3Q775JXFZ5X8M), at least one side must be male)   
 - 1x 3d-printed chassis  
 - 1x microSD card (you can find it [here](https://www.amazon.com/SANDISK-Ultra-microSD-UHS-I-SDSQUJQ-064G-GZ6MA/dp/B0G8KLQ64L))
+- 1x microSD-to-USB adapter (you can find it [here](https://www.amazon.com/acer-Adapter-MicroSD-Compatible-iPhone16/dp/B0DQ71G4G4?crid=27XQWUGMB1APE))
 
-You must also have a **hot glue gun** **with glue sticks**, a **soldering iron with solder**, **M2.5 and M3 screws**, and **electrical tape**. The latter is recommended but not required.
+You must also have a **hot glue gun** **with glue sticks**, a **soldering iron with solder**, **M2.5 and M3 screws and nuts**, and **electrical tape**. The latter is recommended but not required.
