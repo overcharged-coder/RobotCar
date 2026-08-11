@@ -10,3 +10,4 @@
 6. Go to your Command Prompt, and run `ssh [Device Name]@[User Name].local`. Replace `[Device Name]` and `[User Name]` with the device name and user name you set up in the Imager
 7. Enter the password, which you set up in the Imager
 8. Run `nano car.py` in the terminal, copy the code from [this file](./car.py) and paste it into nano via right click
+9. Use Ctrl-X and type Y and then Enter.
