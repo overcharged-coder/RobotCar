@@ -1,6 +1,6 @@
 # Software and Code
 
-> Software and code you need to put into your Raspberry Pi
+> Software and code you need to put into your Raspberry Pi. Make sure you have the Raspberry Pi 4B, the Raspberry Pi Power Supply, and the microSD with its adapter. All mentioned [here](./PARTS.md)
 
 1. Download the Raspberry Pi Imager [here](https://www.raspberrypi.com/software/)
 2. Insert the microSD card into the adapter and plug it into the laptop
