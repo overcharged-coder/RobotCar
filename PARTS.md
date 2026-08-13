@@ -8,7 +8,7 @@ This build includes:
 - 4x GA12-N20 3mm Motors (you can find them [here](https://www.amazon.com/dp/B0BFQWMXF3))  
 - 4x RecDec 3mm Rubber Wheels (you can find them [here](https://www.amazon.com/dp/B0DZC4BP8Q))  
 - 2x Aobao 4 AA Battery Holders (you can find them [here](https://www.amazon.com/dp/B09MZ1VFVY))  
-- 8x AA Batteries (you can find them [here](https://www.amazon.com/dp/B0B1DF9NVJ), although I would recommend getting rechargeable ones)  
+- 8x AA Batteries (you can find them [here](https://www.amazon.com/AmazonBasics-Rechargeable-Batteries-8-Pack-Pre-charged/dp/B00CWNMV4G?crid=212NX00K1P82T), **please get rechargeable ones!**)  
 - Loose black and red jumpers (you can find some [here](https://www.amazon.com/Tin-Plated-Breadboard-Arduino-Flexible-Electronic/dp/B093L9CSW5?crid=3Q775JXFZ5X8M))   
 - Loose Dupont wires (you can find some [here](https://www.amazon.com/EDGELEC-Breadboard-Optional-Assorted-Multicolored/dp/B07GD2BWPY?crid=3Q775JXFZ5X8M), at least one side must be male)   
 - 1x 3d-printed chassis  
