@@ -17,3 +17,5 @@ This build includes:
 - 1x Raspberry Pi Power Supply (you can find it [here](https://www.amazon.com/Raspberry-Pi-USB-C-Power-Supply/dp/B07W8XHMJZ?crid=2RVV2MB1BDF8Q))
 
 You must also have a **hot glue gun** **with glue sticks**, a **soldering iron with solder**, **M2.5 and M3 screws and nuts**, and **electrical tape**. The latter is recommended but not required.
+
+Once you get the wheels, **cover it in two layers of electrical tape!** 4 wheelers have an inherit problem with skid-steering, therefore reducing the friction will make the turns faster and smoother. The only downside that the car will slip to a slight distance when stopping, but it should be fine.
