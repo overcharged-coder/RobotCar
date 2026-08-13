@@ -33,7 +33,7 @@
    For example:
 
    ```bash
-   ssh om@robotcar.local
+   ssh car@robotcar.local
    ```
 
 4. If you are asked whether you want to continue connecting, type:
