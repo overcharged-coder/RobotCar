@@ -1,6 +1,28 @@
 # Building Steps
 
-> Follow these steps to build the robot car. Before starting, make sure you have all the required [parts](./PARTS.md) and have completed the [software setup](./SOFTWARE.md).
+> Follow these steps to build the robot car. Before starting, make sure you have all the required [parts](./PARTS.md) and have completed the [software setup](./SOFTWARE.md). You can also use the [Raspberry Pi wiring diagram](./wiring%20diagrams/pi-wiring.png) as a visual reference while wiring the car.
+
+## Programs Used in This Guide
+
+This project uses four Python files. The files themselves and the instructions for placing them on the Raspberry Pi are provided in [SOFTWARE.md](./SOFTWARE.md).
+
+| File | Purpose | Required? |
+| --- | --- | --- |
+| [`motor_test.py`](./motor_test.py) | Tests each of the four motors individually in both directions. Useful for checking motor wiring before driving the car. | Optional |
+| [`drive.py`](./drive.py) | Provides manual RC control using `W`, `A`, `S`, `D`, `SPACE`, and `Q`. | Yes |
+| [`ultrasonic_test.py`](./ultrasonic_test.py) | Displays the readings from the left, center, and right HC-SR04 sensors so each sensor can be checked individually. | Optional |
+| [`autonomous.py`](./autonomous.py) | Drives the car automatically using all three HC-SR04 sensors while still allowing manual RC override at any time. | Yes for autonomous driving |
+
+The recommended order is:
+
+```text
+motor_test.py        Optional motor check
+drive.py             Manual driving
+ultrasonic_test.py   Optional sensor check
+autonomous.py        Autonomous driving
+```
+
+You can skip the two optional test programs, but they can make troubleshooting much easier if something is not working as expected.
 
 ## 1 - Attaching Everything to the Chassis
 
@@ -153,6 +175,8 @@ All four battery wires should now end in male DuPont connectors.
 
 ## 3 - Wiring
 
+> Use the [Raspberry Pi wiring diagram](./wiring%20diagrams/pi-wiring.png) as a visual reference throughout this section. The written steps below explain each connection in detail.
+
 > Keep the Raspberry Pi powered off and both battery holders empty while completing this section.
 
 ### 3.1 - Motor Wires
@@ -247,7 +271,7 @@ Connect DRV1 using the Raspberry Pi's physical pin numbers.
 | IN1      |                   11 |
 | IN2      |                   13 |
 | IN3      |                   16 |
-| IN4      |                   15 |
+| IN4      |                   18 |
 | GND      |                    6 |
 | VCC      | Do not connect to Pi |
 
@@ -255,7 +279,7 @@ Connect DRV1 using the Raspberry Pi's physical pin numbers.
 DRV1 IN1 -> Pi pin 11
 DRV1 IN2 -> Pi pin 13
 DRV1 IN3 -> Pi pin 16
-DRV1 IN4 -> Pi pin 15
+DRV1 IN4 -> Pi pin 18
 DRV1 GND -> Pi pin 6
 ```
 
@@ -473,7 +497,7 @@ DRV1
 IN1 -> Pi pin 11
 IN2 -> Pi pin 13
 IN3 -> Pi pin 16
-IN4 -> Pi pin 15
+IN4 -> Pi pin 18
 GND -> Pi pin 6 + Battery 1 negative
 VCC -> Battery 1 positive
 
@@ -536,9 +560,13 @@ Before placing the car on the ground, lift the chassis so that all four wheels c
    * You smell burning
    * You see smoke
 
-### 5.2 - Individual Motor Test
+### 5.2 - Individual Motor Test (Optional)
 
-Test each motor individually in both directions before trying to drive all four at once.
+> **Optional:** You can skip this test and continue to the RC program. It is useful for confirming that every motor and DRV8833 output works before trying to drive the whole car.
+
+Use [`motor_test.py`](./motor_test.py).
+
+Its purpose is to run each motor individually in both directions so a wiring or motor problem can be isolated easily.
 
 ```text
 DRV1 OUT1/OUT2 -> Front Left
@@ -548,6 +576,12 @@ DRV2 OUT1/OUT2 -> Rear Left
 DRV2 OUT3/OUT4 -> Rear Right
 ```
 
+Run:
+
+```bash
+python3 motor_test.py
+```
+
 Each motor should:
 
 1. Rotate in one direction.
@@ -555,72 +589,25 @@ Each motor should:
 3. Rotate in the opposite direction.
 4. Stop.
 
-If a motor rotates in the wrong physical direction, leave the wiring alone. Its direction can be reversed in the software.
+If a motor does not move, check its motor wires and DRV8833 connections.
 
+If a motor rotates in the opposite direction from what you expected, do not immediately rewire the motor. The driving programs already account for the required motor directions.
 
-### 5.3 - Ultrasonic Sensor Test
+### 5.3 - Ultrasonic Sensor Test (Optional)
 
-After the motor test succeeds, test all three HC-SR04 sensors before running autonomous-driving software.
+> **Optional:** You can skip this test and continue to driving. It is useful for confirming that all three HC-SR04 sensors and their ECHO voltage dividers are working before autonomous driving.
 
-Create a file named `ultrasonic_test.py` containing:
+Use [`ultrasonic_test.py`](./ultrasonic_test.py).
 
-```python
-from gpiozero import OutputDevice, DigitalInputDevice
-from time import sleep, perf_counter
+Its purpose is to continuously display the measured distance from:
 
-left_trig = OutputDevice(25)
-left_echo = DigitalInputDevice(13)
-center_trig = OutputDevice(12)
-center_echo = DigitalInputDevice(19)
-right_trig = OutputDevice(26)
-right_echo = DigitalInputDevice(21)
-
-
-def get_distance(trig, echo):
-    trig.off()
-    sleep(0.000002)
-    trig.on()
-    sleep(0.00001)
-    trig.off()
-
-    timeout = perf_counter() + 0.03
-    while not echo.value:
-        if perf_counter() > timeout:
-            return None
-
-    start = perf_counter()
-    timeout = start + 0.03
-    while echo.value:
-        if perf_counter() > timeout:
-            return None
-
-    return (perf_counter() - start) * 34300 / 2
-
-
-try:
-    while True:
-        left = get_distance(left_trig, left_echo)
-        sleep(0.06)
-        center = get_distance(center_trig, center_echo)
-        sleep(0.06)
-        right = get_distance(right_trig, right_echo)
-        sleep(0.06)
-
-        left_text = f"{left:.1f} cm" if left is not None else "NO ECHO"
-        center_text = f"{center:.1f} cm" if center is not None else "NO ECHO"
-        right_text = f"{right:.1f} cm" if right is not None else "NO ECHO"
-
-        print(
-            f"LEFT: {left_text:>10} | "
-            f"CENTER: {center_text:>10} | "
-            f"RIGHT: {right_text:>10}"
-        )
-
-except KeyboardInterrupt:
-    print("\nStopped.")
+```text
+LEFT    Left HC-SR04
+CENTER  Front HC-SR04
+RIGHT   Right HC-SR04
 ```
 
-Run it with:
+Run:
 
 ```bash
 python3 ultrasonic_test.py
@@ -629,20 +616,22 @@ python3 ultrasonic_test.py
 Test the sensors one at a time:
 
 1. Move your hand toward and away from the left sensor. The `LEFT` reading should change.
-2. Move your hand in front of the center sensor. The `CENTER` reading should change.
+2. Move your hand toward and away from the center sensor. The `CENTER` reading should change.
 3. Move your hand toward and away from the right sensor. The `RIGHT` reading should change.
-4. Make sure moving your hand near one sensor does not consistently cause another sensor's reading to change instead.
-5. Press `Ctrl+C` to stop the test.
+4. Make sure the reading that changes matches the sensor you are testing.
+5. Press `Ctrl+C` to stop the program.
 
-The test code triggers the sensors one at a time with a short delay between them to reduce ultrasonic interference.
+The sensors are triggered separately to reduce ultrasonic interference between them.
 
-> The displayed values are measured from the sensor faces. The autonomous-driving software can subtract approximately 3.0 cm from the center reading and 1.8 cm from each side reading when it needs clearance from the chassis edge instead.
+> The raw HC-SR04 measurement is taken from the face of the sensor. `autonomous.py` accounts for the approximate sensor positions on this build by subtracting about 3.0 cm from the front reading and 1.8 cm from each side reading when calculating chassis clearance.
 
 ## 6 - Running the RC Program
 
-Follow the instructions in [SOFTWARE.md](./SOFTWARE.md) to install the required software and place the RC program on the Raspberry Pi.
+Use [`drive.py`](./drive.py).
 
-Run the program with:
+The purpose of `drive.py` is to provide direct manual control of the robot car. Follow [SOFTWARE.md](./SOFTWARE.md) to place the file on the Raspberry Pi.
+
+Run:
 
 ```bash
 python3 drive.py
@@ -676,13 +665,73 @@ Q       Quit
 
 If one or more wheels rotate backward when they should rotate forward, adjust their direction in the software rather than changing the physical wiring.
 
-## 7 - Ground Test
+## 7 - Running the Autonomous Program
+
+Use [`autonomous.py`](./autonomous.py).
+
+The purpose of `autonomous.py` is to drive the robot car automatically using all three HC-SR04 sensors while still allowing manual control at any time.
+
+Run:
+
+```bash
+python3 autonomous.py
+```
+
+During autonomous driving:
+
+```text
+Center obstacle -> Stop -> Reverse briefly -> Compare left and right -> Turn toward the clearer side
+Left obstacle   -> Turn right
+Right obstacle  -> Turn left
+Clear path      -> Continue forward
+```
+
+The program uses the sensor positions from this build when calculating the actual clearance from the chassis:
+
+```text
+Front sensor offset -> approximately 3.0 cm
+Side sensor offset  -> approximately 1.8 cm
+```
+
+You can manually override autonomous driving at any time:
+
+```text
+W       Forward
+S       Backward
+A       Turn left
+D       Turn right
+SPACE   Stop
+Q       Quit
+```
+
+After one second without manual input, the program automatically returns to autonomous driving.
+
+The terminal continuously displays the current left, front, and right clearances while the program is running.
+
+### 7.1 - First Autonomous Test
+
+1. Place the car on a flat, open surface with plenty of room around it.
+2. Make sure both motor batteries are installed and connected.
+3. Start `autonomous.py`.
+4. Allow the car to begin moving forward.
+5. Place a large object in front of the car and confirm that it stops, reverses briefly, and turns toward the side with more space.
+6. Approach the left side sensor with an object and confirm that the car turns away to the right.
+7. Approach the right side sensor with an object and confirm that the car turns away to the left.
+8. Press `W`, `A`, `S`, or `D` and confirm that manual control immediately overrides autonomous driving.
+9. Stop pressing controls and confirm that autonomous driving resumes after about one second.
+10. Press `SPACE` if you need to stop the motors immediately.
+11. Press `Q` to exit.
+
+If the car does not turn far enough or turns too far, adjust the maneuver timing values described in [SOFTWARE.md](./SOFTWARE.md).
+
+## 8 - Ground Test
+
 
 Once the lifted test works correctly:
 
 1. Place the car on a flat, open surface.
 2. Make sure there are no obstacles immediately in front of or behind the car.
-3. Start the RC program.
+3. Start `drive.py`.
 4. Briefly drive forward.
 5. Confirm the car travels straight.
 6. Test backward movement.
@@ -692,7 +741,7 @@ Once the lifted test works correctly:
 
 Because all four wheels are fixed in position, the car uses skid steering. The wheels may need to slide slightly sideways while turning.
 
-## 8 - Final Checks (Optional)
+## 9 - Final Checks (Optional)
 
 > **Optional:** This final checklist is not required to continue using the robot car. It is provided as a quick way to catch loose connections, mounting problems, or wiring mistakes.
 
@@ -723,7 +772,10 @@ If you choose to do the final check, make sure:
 * All three HC-SR04 VCC pins are connected to the 5 V sensor rail.
 * All three HC-SR04 GND pins are connected to the sensor GND rail.
 * Each HC-SR04 ECHO line passes through its own 1 kΩ / 2 kΩ voltage divider before reaching the Raspberry Pi.
-* All three sensors return sensible distance readings in `ultrasonic_test.py`.
+* `motor_test.py` can run all four motors individually if troubleshooting is needed.
+* `drive.py` provides working manual forward, backward, left, right, stop, and quit controls.
+* All three sensors return sensible distance readings in `ultrasonic_test.py` if you choose to run the optional sensor test.
+* `autonomous.py` uses the three sensors for obstacle avoidance and accepts manual RC override.
 * Side-sensor wiring is secured away from the wheels.
 
-The robot car is now ready to drive and sense obstacles!
+The robot car is now ready for both manual and autonomous driving!
