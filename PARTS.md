@@ -14,7 +14,8 @@ This build includes:
 - 1x 3d-printed chassis  
 - 1x microSD card (you can find it [here](https://www.amazon.com/SANDISK-Ultra-microSD-UHS-I-SDSQUJQ-064G-GZ6MA/dp/B0G8KLQ64L))
 - 1x microSD-to-USB adapter (you can find it [here](https://www.amazon.com/acer-Adapter-MicroSD-Compatible-iPhone16/dp/B0DQ71G4G4?crid=27XQWUGMB1APE))
-- 1x Raspberry Pi Power Supply (you can find it [here](https://www.amazon.com/Raspberry-Pi-USB-C-Power-Supply/dp/B07W8XHMJZ?crid=2RVV2MB1BDF8Q))
+- 3x HC-SR04 Ultrasonic Sensors (you can find them [here](https://www.amazon.com/dp/B01COSN7O6))
+- 1x Raspberry Pi Power Bank (you can find it [here](https://www.amazon.com/dp/B0C6XK77H))
 
 You must also have a **hot glue gun** **with glue sticks**, a **soldering iron with solder**, **M2.5 and M3 screws and nuts**, and **electrical tape**. The latter is recommended but not required.
 
