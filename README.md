@@ -94,16 +94,16 @@ Manual controls can also temporarily override autonomous mode.
 * 💻 [Software Setup](docs/SOFTWARE.md)
 * 🔌 [Wiring Diagram](docs/drawings/pi-wiring.png)
 
-## Project Status
+## Project Updates
 
-* [x] Four-motor drivetrain
-* [x] Manual driving
-* [x] Three ultrasonic sensors
-* [x] Autonomous obstacle avoidance
-* [x] Manual override
-* [ ] Camera-based navigation
-* [ ] AI driveable-floor detection
-* [ ] Improved path planning
+Current development work, planned features, and known issues are tracked here:
+
+* 📋 [RobotCar Project Board](https://github.com/users/overcharged-coder/projects/2)
+* 🛠 [Open Issues](https://github.com/overcharged-coder/RobotCar/issues)
+* ✅ [Closed Issues](https://github.com/overcharged-coder/RobotCar/issues?q=is%3Aissue%20state%3Aclosed)
+
+The Project Board is the main place to see what is currently being worked on, what is planned next, and what has been completed.
+
 
 ## Future Development
 
