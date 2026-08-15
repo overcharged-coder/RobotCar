@@ -22,7 +22,7 @@ The car uses two DRV8833 motor drivers, four DC motors, and three ultrasonic sen
 * 2 × motor battery packs
 * Robot chassis and wheels
 
-See [PARTS.md](PARTS.md) for the complete parts list.
+See [Parts List](docs/PARTS.md) for the complete parts list.
 
 ## Quick Start
 
@@ -40,19 +40,19 @@ sudo apt update
 sudo apt install -y python3-gpiozero
 ```
 
-### Test the motors
+### Test the Motors
 
 ```bash
 python3 motor_test.py
 ```
 
-### Test the ultrasonic sensors
+### Test the Ultrasonic Sensors
 
 ```bash
 python3 ultrasonic_test.py
 ```
 
-### Manual driving
+### Manual Driving
 
 ```bash
 python3 drive.py
@@ -89,10 +89,10 @@ Manual controls can also temporarily override autonomous mode.
 
 ## Documentation
 
-* 📦 [Parts List](PARTS.md)
-* 🔧 [Build & Wiring Guide](BUILD.md)
-* 💻 [Software Setup](SOFTWARE.md)
-* 🔌 [Wiring Diagrams](wiring%20diagrams/)
+* 📦 [Parts List](docs/PARTS.md)
+* 🔧 [Build & Wiring Guide](docs/BUILD.md)
+* 💻 [Software Setup](docs/SOFTWARE.md)
+* 🔌 [Wiring Diagram](docs/drawings/pi-wiring.png)
 
 ## Project Status
 
